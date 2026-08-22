@@ -31,7 +31,7 @@
 
  <Transition name="expand">
  <div v-if="statsExpanded" class="us-body">
- <div class="us-row" v-for="row in kpiCards" :key="row.label" :class="{ 'us-row--link': row.link }" @click="row.link && router.push(row.link)">
+ <div class="us-row" v-for="row in kpiCards" :key="row.label">
  <span class="us-row__label">{{ row.label }}</span>
  <span class="us-row__val">{{ row.value }}</span>
  </div>
@@ -124,8 +124,8 @@ const kpiCards = computed(() => {
  { label:'عملاء', value: s.users.clients, link:'/admin/users?role=client' },
  { label:'مستقلون', value: s.users.sellers, link:'/admin/users?role=seller' },
  { label:'حسابات محظورة', value: s.users.blocked, link:'/admin/users?status=blocked' },
- { label:'إجمالي الطلبات', value: s.orders.total, link:'/admin/financials' },
- { label:'طلبات مكتملة', value: s.orders.completed, link:'/admin/financials' },
+ { label:'إجمالي الطلبات', value: s.orders.total, link:null },
+ { label:'طلبات مكتملة', value: s.orders.completed, link:null },
  { label:'إيرادات المنصة', value: `$${Number(s.financials.platform_revenue_total).toFixed(2)}`, link:'/admin/financials' },
  { label:'ضمان محتجز', value: `$${Number(s.financials.total_escrow_held).toFixed(2)}`, link:'/admin/financials' },
  ]
@@ -135,11 +135,11 @@ const finRows = computed(() => {
  if (!stats.value) return []
  const f = stats.value.financials
  return [
- { label:'إجمالي الإيداعات المعتمدة', value: f.total_deposits_approved,  },
- { label:'إجمالي السحوبات المعتمدة', value: f.total_withdrawals_approved,  },
- { label:'إيرادات المنصة (الكلية)', value: f.platform_revenue_total,  },
- { label:'إيرادات هذا الشهر', value: f.platform_revenue_month,  },
- { label:'ضمان محتجز حالياً', value: f.total_escrow_held,  },
+ { label:'إجمالي الإيداعات المعتمدة', value: f.total_deposits_approved, color:'#10B981' },
+ { label:'إجمالي السحوبات المعتمدة', value: f.total_withdrawals_approved, color:'#EF4444' },
+ { label:'إيرادات المنصة (الكلية)', value: f.platform_revenue_total, color:'#F59E0B' },
+ { label:'إيرادات هذا الشهر', value: f.platform_revenue_month, color:'#F59E0B' },
+ { label:'ضمان محتجز حالياً', value: f.total_escrow_held, color:'#6366F1' },
  ]
 })
 
@@ -168,16 +168,16 @@ onMounted(async () => {
 .alert-link { margin-right:auto; color:var(--color-gold); text-decoration:none; font-weight:700; white-space:nowrap; }
 
 .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-.unified-stats { background:var(--color-bg-card); border:1px solid rgb(41, 86, 176) ; border-radius:16px; overflow:hidden; }
+.unified-stats { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:16px; overflow:hidden; }
 .us-header { display:flex; align-items:center; justify-content:space-between; padding:22px 24px; cursor:pointer; }
 .us-headline { display:flex; align-items:baseline; gap:12px; }
 .us-headline__num { font-family:var(--font-display); font-size:32px; font-weight:900; color:var(--color-text); }
 .us-headline__label { font-size:13px; color:var(--color-text-3); }
-.us-toggle { border:1px solid var(--color-border); border-radius:999px; padding:8px 16px; font-size:12.5px; color:rgb(64, 144, 229); cursor:pointer; font-weight:600; }
+.us-toggle { background:var(--color-bg-2); border:1px solid var(--color-border); border-radius:999px; padding:8px 16px; font-size:12.5px; color:var(--color-primary); cursor:pointer; font-weight:600; }
 .us-body { border-top:1px solid var(--color-border); display:flex; flex-direction:column; }
 .us-row { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-bottom:1px solid var(--color-border); }
 .us-row:last-child { border-bottom:none; }
-.us-row--link { cursor:pointer; transition: .15s; }
+.us-row--link { cursor:pointer; transition:background .15s; }
 .us-row--link:hover { background:var(--color-bg-2); }
 .us-row__label { font-size:13px; color:var(--color-text-2); }
 .us-row__val { font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--color-text); }
@@ -194,10 +194,10 @@ onMounted(async () => {
 
 /* Panels row */
 .panels-row { display:grid; grid-template-columns:1fr 1fr 290px; gap:16px; }
-.panel { background:var(--color-bg-card); border:1px solid rgb(41, 86, 176); border-radius:18px; overflow:hidden; }
+.panel { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:18px; overflow:hidden; }
 .panel--red { border-color:rgba(239,68,68,.2); }
 .panel-hdr { padding:16px 20px; border-bottom:1px solid var(--color-border); }
-.panel-hdr h3 { font-family:var(--font-display); font-size:15px; font-weight:700; color: rgb(41, 86, 176); }
+.panel-hdr h3 { font-family:var(--font-display); font-size:15px; font-weight:700; }
 
 .fin-rows { display:flex; flex-direction:column; }
 .fin-row { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid var(--color-border); }
@@ -209,7 +209,7 @@ onMounted(async () => {
 .brow { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; }
 .brow__left { display:flex; align-items:center; gap:10px; }
 .brow__dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.brow__label { font-size:13px; color:white; }
+.brow__label { font-size:13px; color:var(--color-text-2); }
 .brow__val { font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--color-text); }
 
 .pending-rows { display:flex; flex-direction:column; }
@@ -217,7 +217,7 @@ onMounted(async () => {
 .prow:last-child { border-bottom:none; }
 .prow:hover { background:rgba(239,68,68,.05); color:var(--color-text); }
 .prow__icon { font-size:20px; flex-shrink:0; }
-.prow__label { flex:1; font-size:13px; color: white; }
+.prow__label { flex:1; font-size:13px; }
 .prow__count { font-family:var(--font-display); font-size:18px; font-weight:800; color:#EF4444; }
 
 @media (max-width:1200px) { .stats-grid { grid-template-columns:repeat(2,1fr); } }
