@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap');
+
+
+:root {
+  --color-bg:            #0F1628;
+  --color-bg-2:          #151D35;
+  --color-bg-card:       #1A2340;
+  --color-bg-card-hover: #1F2A4A;
+  --color-border:        rgba(99, 102, 241, 0.15);
+  --color-border-hover:  rgba(99, 102, 241, 0.40);
+  --color-primary:       #6366F1;
+  --color-primary-2:     #8B5CF6;
+  --color-primary-glow:  rgba(99, 102, 241, 0.25);
+  --color-gold:          #F59E0B;
+  --color-gold-soft:     rgba(245, 158, 11, 0.12);
+  --color-text:          #F8FAFF;
+  --color-text-2:        #A8B3CF;
+  --color-text-3:        #6B7A99;
+  --color-success:       #10B981;
+  --color-error:         #EF4444;
+  --grad-primary:        linear-gradient(135deg, #6366F1, #8B5CF6);
+  --grad-gold:           linear-gradient(135deg, #F59E0B, #FCD34D);
+  --grad-hero:           radial-gradient(ellipse 80% 50% at 50% -5%, rgba(99,102,241,0.28) 0%, transparent 65%);
+  --shadow-card:         0 4px 24px rgba(0,0,0,0.35);
+  --shadow-glow:         0 0 40px rgba(99,102,241,0.18);
+  --shadow-glow-hover:   0 8px 48px rgba(99,102,241,0.38);
+  --font-display:        'Tajawal', sans-serif;
+  --font-body:           'Changa', sans-serif;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-full: 9999px;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-heading: 'Cairo', sans-serif;  /* خط العناوين الرئيسية والفرعية */
+  --font-body: 'Tajawal', sans-serif;    /* خط باقي النصوص والأزرار والمدخلات */
+
+}
+
+/* ── ☀️ Default Light Theme (الوضع النهاري الافتراضي) ─────────────────── */
+:root,
+[data-theme="light"] {
+  --color-bg:            #979db7;
+  --color-bg-2:          #545e84;
+  --color-bg-card:       rgba(133, 173, 213, 0.2);
+  --color-bg-card-hover: #F4F5FB;
+  --color-border:        rgba(62, 128, 234, 0.422);
+  --color-border-hover:  rgba(99, 102, 241, 0.45);
+  --color-primary:       #6366F1;
+  --color-primary-2:     #5129af;
+  --color-primary-glow:  rgba(99, 102, 241, 0.18);
+  --color-gold:          #491de7;
+  --color-gold-soft:     rgba(217, 119, 6, 0.10);
+  --color-text:          #ffffff;
+  --color-text-2:        #ffffff;
+  --color-text-3:        #ffffff;
+    --color-text-4:        #116eb0;
+
+  --color-success:       #059669;
+  --color-error:         #DC2626;
+  --shadow-card:         0 4px 24px rgba(20, 25, 50, 0.08);
+  --shadow-glow:         0 0 40px rgba(99, 102, 241, 0.10);
+  --shadow-glow-hover:   0 8px 48px rgba(99, 102, 241, 0.18);
+}
+
+/* ── 🌙 Dark Theme (الوضع الداكن عند التبديل) ────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:            #475779;
+  --color-bg-2:          linear-gradient(145deg, #6487e0 2%, #4c6194 50%, #3c4e66 100%);
+  --color-bg-card:       rgba(255, 255, 255, 0.06);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.1);
+  --color-border:      #0000003c;
+  --color-border-hover:  rgba(255, 255, 255, 0.3);
+  --color-text:         #000000 ;
+  --color-text-2:        #080809;
+  --color-text-3:       #080809;
+  --shadow-card:         0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Global Styles ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* 2. تطبيق خط النصوص والواجهات عامة */
+*, html, body, input, textarea, select, button, a, p, span, div {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* 3. تطبيق خط العناوين فقط */
+h1, h2, h3, h4, h5, h6, .title, .heading {
+  font-family: 'Cairo', sans-serif !important;
+}
+
+/* توحيد لون الـ Placeholder في كل الموقع */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important; /* لضمان عدم وجود شفافية تلقائية من المتصفح */
+}
+
+/* للدعم التام لكافة المتصفحات القديمة والحديثة */
+::-webkit-input-placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+::-moz-placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+:-ms-input-placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important;
+} 
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* ── Text Gradients ─────────────────────────────────────────────────── */
+.grad-text {
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-text {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Motion Preferences ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* 1. لتوضيح النصوص التوضيحية الباهتة (Placeholder) */
+textarea::placeholder,
+input::placeholder {
+  color: rgba(255, 255, 255, 0.75) !important; /* لون أبيض فاتح وواضح */
+  opacity: 1 !important; /* إلغاء الشفافية التلقائية من المتصفح */
+}
