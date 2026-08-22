@@ -2,12 +2,11 @@
  <div class="landing" dir="rtl">
  <AppNavbar />
 
-
  <!-- ══════════════════════════════════════════════════════════════
  HERO SECTION
  ═══════════════════════════════════════════════════════════════ -->
  <section class="hero">
- <!-- Background image slider (crossfades every 3s, blended with a gradient) -->
+ <!-- Background image slider -->
  <div class="hero-bg-slider" aria-hidden="true">
  <div
  v-for="(img, i) in heroImages" :key="i"
@@ -24,12 +23,24 @@
  <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
 
  <div class="hero__inner">
- <!-- Badge -->
-
- <!-- Headline -->
- <h1 class="hero-sub" v-motion-slide-bottom> منصة ProLinker تجمع أفضل المستقلين بأصحاب المشاريع في بيئة آمنة
- مع نظام دفع بالضمان المُحكم.
- </h1>
+ <!-- Hero Headline Section (5 lines layout & uniform font size) -->
+ <div class="hero-headline-stack" v-motion-slide-bottom>
+   <div class="hero-line">
+     منصة <span class="brand-highlight">ProLinker</span>
+   </div>
+   <div class="hero-line">
+     تجمع أفضل المستقلين بأصحاب
+   </div>
+   <div class="hero-line">
+     المشاريع
+   </div>
+   <div class="hero-line">
+     في بيئة آمنة مع نظام دفع
+   </div>
+   <div class="hero-line">
+     بالضمان المُحكم.
+   </div>
+ </div>
 
  <!-- Search bar -->
  <div class="hero-search" v-motion-slide-bottom>
@@ -124,7 +135,7 @@
  </section>
 
  <!-- ══════════════════════════════════════════════════════════════
- FEATURED SERVICES "مقترح لك"
+ FEATURED SERVICES
  ═══════════════════════════════════════════════════════════════ -->
  <section class="section suggested-section">
  <div class="section__inner">
@@ -299,7 +310,8 @@
  </div>
 </template>
 
-<script setup> import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+<script setup>
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import ServiceCard from '@/components/shared/ServiceCard.vue'
@@ -317,7 +329,6 @@ const activeCategory = ref(null)
 const sortBy = ref('newest')
 const categories = ref([])
 
-// Fetch real categories from API (added by admin)
 async function fetchCategories() {
  try {
  const { data } = await api.get('/categories')
@@ -331,11 +342,6 @@ async function fetchCategories() {
 const activeCategoryName = computed(() => categories.value.find(c => c.id === activeCategory.value)?.name ?? ''
 )
 
-/**
- * Displayed services — always the real API results. No fake fallback:
- * if there are genuinely no services yet, the section shows an honest
- * "no services yet" empty state instead of fabricated placeholder data.
- */
 const displayedServices = computed(() => {
  let list = services.value
 
@@ -369,7 +375,7 @@ function handleSearch() {
 }
 
 function handleSearchInput() {
- // Debounced local filter happens reactively via displayedServices computed
+ // Debounced local filter
 }
 
 function selectCategory(cat) {
@@ -420,7 +426,7 @@ async function fetchPlatformStats() {
  trustStats.value[2] = { icon: '', num: `+${s.verified_sellers_count}`, label: 'مستقل موثق' }
  if (s.top_categories?.length) quickTags.value = s.top_categories
  } catch {
- // Keep the neutral placeholders/fallback tags on failure — never show fake numbers.
+ // Keep the neutral placeholders
  }
 }
 fetchPlatformStats()
@@ -435,8 +441,6 @@ const howSteps = [
 ]
 
 // ── Hero background slider ───────────────────────────────────────────────
-// Put 5 images at these paths under the frontend's public/ folder
-// (e.g. public/images/hero/1.jpg ... 5.jpg) — or swap these for your own URLs.
 const heroImages = [
  '/images/hero/1.jpg',
  '/images/hero/2.jpg',
@@ -460,7 +464,36 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped> .landing { overflow-x: hidden; }
+<style scoped>
+.landing { overflow-x: hidden; }
+
+/* ── HERO HEADLINE STACK ─────────────────────────────────────────────── */
+.hero-headline-stack {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ text-align: right;
+ max-width: 800px;
+ margin-bottom: 32px;
+}
+
+.hero-line {
+ font-family: var(--font-display);
+ font-size: clamp(22px, 3.2vw, 36px);
+ font-weight: 800;
+ line-height: 1.3;
+ color: var(--color-text, #ffffff);
+ margin: 0;
+}
+
+/* التدرج اللوني المطابق للوغو ProLinker */
+.brand-highlight {
+ background: linear-gradient(120deg, #0593ec 30%, #94cbe2 100%);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ font-weight: 950; 
+ font-size: xx-large;
+}
 
 /* ── HERO ──────────────────────────────────────────────────────────────── */
 .hero {
@@ -481,9 +514,6 @@ onUnmounted(() => {
 .hero-bg-slide--active { opacity: 0.55; }
 .hero-bg-gradient {
  position: absolute; inset: 0;
- /* Fades the photo into the page background at the edges/bottom, and dims
- it so the hero text stays readable — visible on the left, gradually
- disappearing into the background toward the right. */
  background:
  linear-gradient(to bottom, rgba(8,10,20,0.55) 0%, rgba(8,10,20,0.75) 55%, var(--color-bg) 100%),
  linear-gradient(to right, transparent 0%, rgba(8,10,20,0.35) 45%, var(--color-bg) 88%),
@@ -528,42 +558,7 @@ onUnmounted(() => {
  gap: 60px; align-items: center;
  width: 100%; position: relative; z-index: 1;
 }
-/* Badge */
-.hero-badge {
- display: inline-flex; align-items: center; gap: 8px;
- padding: 6px 16px;
- background: rgba(99,102,241,0.1);
- border: 1px solid rgba(99,102,241,0.25);
- border-radius: var(--radius-full);
- font-size: 13px; color: var(--color-text-2);
- margin-bottom: 24px;
-}
-.badge-dot {
- width: 7px; height: 7px;
- border-radius: var(--radius-full);
- background: var(--color-success);
- animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
- 0%,100% { opacity:1; transform: scale(1); }
- 50% { opacity:0.5; transform: scale(0.8); }
-}
-/* Title */
-.hero-title {
- font-family: var(--font-display);
- font-size: clamp(36px, 5vw, 64px);
- font-weight: 900;
- line-height: 1.2;
- letter-spacing: -1px;
- margin-bottom: 20px;
- color: var(--color-text);
-}
-.hero-sub {
- font-size: 17px; color: var(--color-text-2);
- max-width: 520px;
- margin-bottom: 36px;
- line-height: 1.8;
-}
+
 /* Search */
 .hero-search {
  display: flex; gap: 10px; align-items: stretch;
@@ -615,23 +610,29 @@ onUnmounted(() => {
  box-shadow: 0 0 24px rgba(99,102,241,0.35);
 }
 .search-btn:hover { opacity: 0.9; box-shadow: 0 0 36px rgba(99,102,241,0.55); }
+
 /* Quick tags */
 .hero-tags {
  display: flex; flex-wrap: wrap; align-items: center;
- gap: 8px; margin-bottom: 40px;
+ gap: 8px; 
+ margin-top: 50px;
+ margin-bottom: 40px;
 }
-.tags-label { font-size: 14px; color: var(--color-text-3); font-weight: 600; }
+.tags-label { font-size: 15px; color: var(--color-text-2); font-weight: 700; }
 .quick-tag {
- padding: 5px 14px;
+ padding: 6px 16px;
  border-radius: var(--radius-full);
  border: 1px solid var(--color-border);
- background:rgb(162, 159, 159) ;
- color: var(--color-text-2);
- font-size: 15px; cursor: pointer;
+ background: rgba(255, 255, 255, 0.08);
+ color: var(--color-text);
+ font-size: 14px; cursor: pointer;
  font-family: var(--font-body);
+ font-weight: 600;
+ backdrop-filter: blur(4px);
  transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 .quick-tag:hover { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-primary-glow); }
+
 /* Stats */
 .hero-stats {
  display: flex; gap: 32px;
@@ -731,11 +732,7 @@ onUnmounted(() => {
  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
  gap: 20px;
 }
-/* Grid transition */
-.services-grid-enter-active { transition: opacity 0.3s, transform 0.3s var(--ease-smooth); }
-.services-grid-enter-from { opacity: 0; transform: translateY(10px); }
-.services-grid-leave-active { transition: opacity 0.2s; position: absolute; }
-.services-grid-leave-to { opacity: 0; }
+
 /* Skeleton */
 .skeleton-card {
  background: var(--color-bg-card);
@@ -748,6 +745,7 @@ onUnmounted(() => {
 .skeleton--thumb { height: 160px; border-radius: 0; }
 .skeleton-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .skeleton--line { height: 12px; }
+
 /* Empty */
 .empty-state {
  display: flex; flex-direction: column; align-items: center;
@@ -756,6 +754,7 @@ onUnmounted(() => {
 .empty-icon { font-size: 56px; }
 .empty-state h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
 .empty-state p { color: var(--color-text-2); font-size: 15px; }
+
 /* Buttons */
 .btn-outline {
  padding: 10px 24px;
@@ -809,6 +808,7 @@ onUnmounted(() => {
 .step-icon { font-size: 36px; margin-bottom: 16px; }
 .step-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 .step-desc { font-size: 14px; color: var(--color-text-2); line-height: 1.7; }
+
 /* Escrow banner */
 .escrow-banner {
  display: flex; align-items: center; gap: 20px;
@@ -911,6 +911,7 @@ onUnmounted(() => {
  .hero-stats { gap: 20px; flex-wrap: wrap; }
  .hero-search { flex-direction: column; }
  .search-btn { height: 48px; }
+ .hero-tags { margin-top: 30px; }
  .section { padding: 56px 16px; }
  .categories-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
  .trust-grid { grid-template-columns: repeat(2,1fr); }

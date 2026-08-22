@@ -48,8 +48,8 @@
  </div>
  </div>
  <div class="svc-footer">
- <button class="sfbtn sfbtn--ok" @click="updateStatus(svc,'active')" :disabled="actionId===svc.id"> نشر</button>
- <button class="sfbtn sfbtn--pause" @click="updateStatus(svc,'paused')" :disabled="actionId===svc.id">⏸ إيقاف</button>
+ <button class="sfbtn sfbtn--ok" @click="updateStatus(svc,'active')" :disabled="actionId===svc.id || svc.status==='active'"> نشر</button>
+ <button class="sfbtn sfbtn--pause" @click="updateStatus(svc,'paused')" :disabled="actionId===svc.id || svc.status==='paused'"> إيقاف</button>
  <button class="sfbtn sfbtn--sus" @click="openSuspend(svc)" :disabled="actionId===svc.id"> تعليق</button>
  </div>
  </div>
@@ -87,7 +87,7 @@
  </div>
 </template>
 
-<script setup> import { ref, reactive, onMounted } from 'vue'
+<script setup> import { ref, reactive, onMounted, onUnmounted} from 'vue'
 import adminApi from '@/composables/useAdminApi'
 
 const services = ref([])
@@ -138,6 +138,10 @@ const sStatusLabel = s => ({ active:'نشطة', paused:'معلقة', suspended:'
 const truncate = (str, n) => str?.length > n ? str.slice(0,n)+'...' : str
 
 onMounted(loadServices)
+
+// Safety net: never leave the page scroll-locked if this component is destroyed
+// while a modal was open (e.g. navigating away mid-modal).
+onUnmounted(() => { document.body.style.overflow = '' })
 </script>
 
 <style scoped> .admin-services { display:flex; flex-direction:column; gap:20px; }
@@ -145,9 +149,9 @@ onMounted(loadServices)
 .page-title { font-family:var(--font-display); font-size:22px; font-weight:800; margin-bottom:4px; }
 .page-sub { font-size:14px; color:var(--color-text-3); }
 .hdr-controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-.flt-select { background:rgb(80, 109, 190); border:1px solid var(--color-border); border-radius:10px; color:var(--color-text-2); font-family:var(--font-body); font-size:13px; padding:9px 14px; cursor:pointer; outline:none; }
+.flt-select { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:10px; color:var(--color-text-4); font-family:var(--font-body); font-size:13px; padding:9px 14px; cursor:pointer; outline:none; }
 .srch-wrap { position:relative; }
-.srch-input { height:42px; padding:0 14px; background:rgb(80, 109, 190); border:1px solid var(--color-border); border-radius:10px; color:var(--color-text); font-family:var(--font-body); font-size:14px; outline:none; width:220px; transition:border-color .2s; }
+.srch-input { height:42px; padding:0 14px; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:10px; color:var(--color-text); font-family:var(--font-body); font-size:14px; outline:none; width:220px; transition:border-color .2s; }
 .srch-input:focus { border-color:var(--color-primary); }
 .srch-input::placeholder { color:var(--color-text-3); }
 .sk-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
